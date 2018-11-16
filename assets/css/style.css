@@ -1,0 +1,10 @@
+body {
+    background-image: url("http://blog.playabets.co.za/wordpress/wp-content/uploads/2016/08/playstationr-f-c-uefa-champions-league-20150915143_mxjp.jpg");
+    background-size: cover;
+}
+
+.container {
+    margin-top: 250px;
+    background-color: rgb(135, 135, 179);
+    
+}
