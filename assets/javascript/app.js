@@ -1,98 +1,215 @@
-// $("#hide").click(function(){
-//     $("p").hide();
-//     $("h1").hide();
-//     $("hr").hide();
-//     $("#hide").hide();
-// });
-
-var questions = [{
-    "question": "What stadium was the venue for the final?",
-    "option1": "Stade Francais, Paris",
-    "option2": "Allianz Arena, Munich",
-    "option3": "Estadio Santiago Bernabeu, Madrid",
-    "option4": "Wembley Stadium, London",
-    "answer": "4",
-},
-{
-    "question": "Who was the Barcelona head coach?",
-    "option1": "Pep Guardiola",
-    "option2": "Carlos Queiroz",
-    "option3": "Vicente Del Bosque",
-    "option4": "Luis Aragones",
-    "answer": "1",
-},
-{
-    "question": "Who scored the game's opening goal?",
-    "option1": "Sergio Busquets",
-    "option2": "Lionel Messi",
-    "option3": "Pedro Rodriguez",
-    "option4": "David Villa",
-    "answer": "3",
-},
-{
-    "question": "Who scored the equalising goal for Manchester United?",
-    "option1": "Ryan Giggs",
-    "option2": "Nani",
-    "option3": "Javier Hernandez (Chicharito)",
-    "option4": "Wayne Rooney",
-    "answer": "4",
-},
-{
-    "question": "Who scored Barcelona's second goal, and was deservedly awarded the Man of the Match?",
-    "option1": "David Villa",
-    "option2": "Andres Iniesta",
-    "option3": "Lionel Messi",
-    "option4": "Xavi",
-    "answer": "3",
-},
-]
-
-var currentQuestion = 0;
-var score = 0;
-var totQuestions = question.length;
-
-var container = document.getElementById('quizContainer');
-var questionEl = document.getElementById('question');
-
-var opt1 = document.getElementById('opt1');
-var opt2 = document.getElementById('opt2');
-var opt3 = document.getElementById('opt3');
-var opt4 = document.getElementById('opt4');
-var nextButton = document.getElementById('nextButton');
-var resultCont = document.getElementById('result');
-
-function loadQuestion (questionIndex) {
-    var q = questions[questionIndex];
-    questionEl.textContent = (questionIndex + 1) + '. ' + q.question;
-    opt1.textContent = q.option1;
-    opt2.textContent = q.option2;
-    opt3.textContent = q.option3;
-    opt4.textContent = q.option4;
-};
-
-function loadNextQuestion () {
-    var selectedOption = document.querySelector('input[type=radio]:checked');
-    if (!selectedOption){
-        alert('Please select your answer');
-        return;
-    }
-    var answer = selectedOption.nodeValue;
-    if(questions[currentQuestion].answer == answer){
-        score++
-    }
-    selectedOption.checked = false;
-    currentQuestion++;
-    if(currentQuestion == totQuestions - 1){
-        nextButton.textContent = 'finish';
-    }
-    if(currentQuestion == totQuestions){
-        container.style.display = 'none';
-        resultCont.style.display = '';
-        resultCont.textContent = 'Your Score: ' + score;
-        return; 
+$(document).ready(function() {
+    //Creating variable to track the question & "slide" numbers
+    var questionCounter = 0;
     
-    }
-    loadQuestion(currentQuestion);
-}
-
-loadQuestion(currentQuestion);
+    // timeout 
+    var ansTimeout = 3000;
+    
+    //Creating score variables
+    var correct = 0;
+    var incorrect = 0;
+    var missed = 0;
+    
+    //Creating array of user's answers
+    var userAns = [];
+    
+    //Creating an array of objects with the questions, answer options, and correct answer
+    var questions = [
+    {
+        question: "What stadium was the venue for the final?",
+        choices: ["Wembley Stadium, London", "Estadio Santiago Bernabeu, Madrid", " Stade Francais, Paris", "Allianz Arena, Munich"],
+        choicesAnswer: 0
+    },
+    {
+        question: "Who was the Barcelona head coach?",
+        choices: ["Pep Guardiola", "Carlos Queiroz", "Vicente Del Bosque", "Luis Aragones"],
+        choicesAnswer: 0
+    },
+    {
+        question: "Who scored the game's opening goal?",
+        choices: ["Lionel Messi", "Sergio Busquets", "David Villa", "Pedro Rodriguez"],
+        choicesAnswer: 3
+    },
+    {
+        question: "Who scored the equalising goal for Manchester United?",
+        choices: ["Ryan Giggs", "Wayne Rooney", "Javier Hernandez (Chicharito)", "Nani"],
+        choicesAnswer: 1
+    },
+    {
+        question: "Who scored Barcelona's second goal, and was deservedly awarded the Man of the Match?",
+        choices: ["David Villa", "Andres Iniesta", "Lionel Messi", "Xavi"],
+        choicesAnswer: 2
+    }];
+    
+    //Function to submit answers
+    function submitAns() {
+        $("#submit").on("click", function(e) {
+            e.preventDefault();
+            userAns.length = 0;
+                
+            //Record user answer to question
+            var userSelection = $("#responses input:radio[name=optionsRadios]:checked").val();
+            userAns.push(userSelection);
+            console.log(userAns);
+            nextQ();
+        });
+    };
+        
+    //Creating question timer variables & functions
+    var timeLeft = 10;
+    var increment;
+    
+    function runTimer() {
+        increment = setInterval(decrement, 1000);
+    };
+    
+    function decrement() {
+        timeLeft--;
+        $("#time-left").html("Time remaining: " + timeLeft + " seconds");
+        if (timeLeft === 0) {
+            stopTimer();
+            userAns.length = 0;		
+            //Record user answer to question
+            var userSelection = $("#responses input:radio[name=optionsRadios]:checked").val();
+            userAns.push(userSelection);
+            console.log(userAns);
+            nextQ();
+        };
+    };
+    
+    function resetTimer() {
+        timeLeft = 10;
+        $("#time-left").html("Time remaining: " + timeLeft + " seconds");
+    };
+    
+    function displayTimer() {
+        $("#time-left").html("Answer Review");
+    };
+    
+    function stopTimer() {
+        clearInterval(increment);
+    };
+    
+    //Function to display the given response options
+    function createRadios() {
+        var responseOptions = $("#responses");
+        //Empty array for user answer
+        responseOptions.empty();
+            
+        for (var i = 0; i < questions[questionCounter].choices.length; i++) {
+            responseOptions.append('<label><input type="radio" name="optionsRadios" id="optionsRadios2" value="' + [i] +'"><div class="twd-opt">' + questions[questionCounter].choices[i] + '</div></input><br></label>');
+        };
+    };
+    
+    //Function to display the given question
+    function displayQ() {
+        clearQ();
+        resetTimer();
+        $(".questionX").html(questions[questionCounter].question);
+        //Calling the function to display the response options
+        createRadios();
+        //Creating submit button
+        $("#submit-div").append('<button type="submit" class="btn btn-default" id="submit">' + "Submit" + '</button>');
+        runTimer()
+        submitAns();
+    };
+    
+    //Display start page
+    function displayStart() {
+        $("#content").append('<a href="#" class="btn btn-primary btn-lg" id="start-button">' + "Start" + '</a>');
+        //Start game
+        $("#start-button").on("click", function(event) {
+            event.preventDefault();
+            //Displays the first question
+            firstQ();
+            resetTimer();
+        });
+    };
+    
+    //Reset for end of game
+    function reset() {
+        questionCounter = 0;
+        correct = 0;
+        incorrect = 0;
+        missed = 0;
+        userAns = [];
+        resetTimer();
+    };
+    
+    //Display end page
+    function displayEnd() {
+        clearQ();
+        $("#content").append('<h3>' + "Correct answers: " + correct + '</h3><br><h3>' + "Incorrect answers: " + incorrect + '</h3><br><h3>' + "Skipped questions: " + missed + '</h3><br><br><a href="#" class="btn btn-primary btn-lg" id="restart-button">' + "Restart Game" + '</a>');
+        //Restart game
+        $("#restart-button").on("click", function(event) {
+            event.preventDefault();
+            //Displays the first question
+            reset();
+            clearQ();
+            displayStart();
+        });
+    };
+    
+    //Function to clear the question
+    function clearQ() {
+        var questionDiv = $(".questionX");
+        questionDiv.empty();
+    
+        var responsesDiv = $("#responses");
+        responsesDiv.empty();
+    
+        var submitDiv = $("#submit-div");
+        submitDiv.empty();
+    
+        var contentDiv = $("#content");
+        contentDiv.empty();
+    
+        stopTimer();
+    };
+    
+    //Showing whether answer was right/wrong
+    function checkQ() {
+        clearQ();
+        var correctAnswer = questions[questionCounter].choicesAnswer;
+        if (userAns[0] == questions[questionCounter].choicesAnswer) {
+            $("#content").append('<h3>'+"Congratulations! You chose the right answer!" + '</h3>');
+            correct++;
+            displayTimer();
+        }
+        else if (userAns[0] === undefined) {
+            $("#content").append('<h3>'+"Time's up!" + '</h3><br><br><h3>' + "The correct answer was: " + questions[questionCounter].choices[correctAnswer] + '</h3>');
+            missed++;
+            displayTimer();
+        }
+        else {
+            $("#content").append('<h3>'+"You chose the wrong answer." + '</h3><br><br><h3>' + "The correct answer was: " + questions[questionCounter].choices[correctAnswer] + '</h3>');
+            incorrect++;
+            displayTimer();
+        };
+    };
+    
+    //Function to change the question 
+    function nextQ() {
+        checkQ();
+        //Incrementing the count by 1
+        questionCounter++;
+        //If the count is the same as the length of the question array, the counts reset to 0
+        if (questionCounter === questions.length) {
+            setTimeout(displayEnd, ansTimeout);
+        } 
+        else {
+            setTimeout(displayQ, ansTimeout);
+        };
+    };
+    
+    //Function to call the first question
+    function firstQ() {
+        var startContent = $("#content");
+        startContent.empty(); 
+        displayQ();
+    };
+    
+    //Displays the start page
+    displayStart();
+    
+    });

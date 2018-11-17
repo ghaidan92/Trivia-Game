@@ -1,10 +1,48 @@
 body {
-    background-image: url("http://blog.playabets.co.za/wordpress/wp-content/uploads/2016/08/playstationr-f-c-uefa-champions-league-20150915143_mxjp.jpg");
+    background-image: url("https://e1.365dm.com/17/12/768x432/skysports-champions-league-champions-league-trophy-uefa-champions-league_4179916.jpg?20171211102418");
     background-size: cover;
 }
 
-.container {
-    margin-top: 250px;
-    background-color: rgb(135, 135, 179);
-    
+#heading {
+	font-weight: bold;
 }
+
+/*footer*/
+.footer {
+	padding: 30px 0;
+	text-align: right;
+}
+
+
+/*form*/
+.twd-opt {
+    margin-right: 20px;
+    color: white;
+    font-size: 30px;
+}
+
+h1 {
+    color: rgb(247, 7, 7);
+    margin-left: 25%;
+}
+
+h4 {
+    color: rgb(29, 27, 27);
+    font-size: 40px;
+}
+
+h6 {
+    color: rgb(55, 247, 7);
+    font-size: 30px;
+}
+
+h3 {
+    color: rgb(100, 226, 15);
+}
+
+#twd-jumbo {
+    background-image: url("https://e1.365dm.com/17/12/768x432/skysports-champions-league-champions-league-trophy-uefa-champions-league_4179916.jpg?20171211102418");
+    background-size: cover;
+}
+
+

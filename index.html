@@ -13,25 +13,71 @@
 </head>
 
 <body>
-    <!-- <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-4">Hello, welcome to the Champions League Trivia Game!!!</h1>
-            <hr class="my-4">
-            <p>Press the Start Button to Begin!!!</p>
-            <a class="btn btn-danger btn-lg" id="hide" href="#" role="button">Start</a>
-        </div>
-    </div> -->
+    <div class="jumbotron" id="twd-jumbo">
+        <h1 id="heading">The Champions League Trivia Game</h1>
+      </div>
 
-    <div class="container" id="quizContainer">
-        <div id="question" class="question"></div>
-        <label class="option"><input type="radio" name="option" value="1" /><span id="opt1"></span></label>
-        <label class="option"><input type="radio" name="option" value="2" /><span id="opt2"></span></label>
-        <label class="option"><input type="radio" name="option" value="3" /><span id="opt3"></span></label>
-        <label class="option"><input type="radio" name="option" value="4" /><span id="opt4"></span></label>
-        <button id="nextButton" class="next-btn" onclick="loadNextQuestion();">Next Question</button>
-    </div>
-    <div id="result" class="container result" style="display:none;">
-    </div>
+      <div class="row">
+          <div class="col-md-1">
+          </div>
+
+          <div class="col-md-10">				
+              <div class="row">
+                  <div class="col-md-4">
+                  </div>
+
+                  <div class="col-md-4 text-center">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="well">
+                                <h4 id="time-left">
+                                Time remaining: 10 seconds
+                                </h4>
+                            </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div id="content">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="col-md-4">
+                  </div>
+              </div>
+              <br>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div id="quiz">
+                          <form>
+                          <div class="form-group">
+                            <div class="radio"><h6 class="questionX"></h6>
+                                  <div id="responses">
+                                  </div>
+                              </div>
+                          </div>
+                          <br><br>
+                        <div id="submit-div"></div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-1">
+          </div>
+      </div>
+              
+      <footer class="footer">
+          <div class="container" id="footer-text">
+              <p class="text-muted">Copyright &reg; 2018 Ghaidan Alhubaishi</p>
+          </div>
+      </footer>
+
+   
 
 
 
